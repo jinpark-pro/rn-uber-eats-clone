@@ -43,8 +43,10 @@
     import { ..., SafeAreaView } from 'react-native';
     ...
       return (
-        <SafeAreaView>
-          <HeaderTabs />
+        <SafeAreaView style={{ backgroundColor: '#eee', flex: 1 }}>
+          <View style={{ backgroundColor: 'white', padding: 15 }}>
+            <HeaderTabs />
+          </View>
         </SafeAreaView>
       ...
     ```
