@@ -212,14 +212,14 @@
             marginTop: 5,
             backgroundColor: '#fff',
             paddingVertical: 10,
-            paddingLeft: 20,
+            paddingHorizontal: 15,
           }}
         >
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {items.map((item, index) => (
               <View
                 key={index}
-                style={{ alignItems: 'center', marginRight: 30 }}
+                style={{ alignItems: 'center', marginHorizontal: 15 }}
               >
                 <Image
                   source={item.image}
