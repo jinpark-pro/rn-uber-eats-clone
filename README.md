@@ -246,7 +246,7 @@
     </SafeAreaView>
     ```
 
-## RestaurantItems
+## Restaurant Items
 
 - Create `/components/RestaurantItems.js`
 
@@ -353,3 +353,37 @@
     ```
 
 - Add `RestaurantItems` to `/screens/Home.js`
+
+## Dynamic Restaurant Items
+
+- Access `localRestaurants` from `/screens/Home.js`
+
+  - On `/components/RestaurantItems.js`, add `export` to `localRestaurants`
+
+    - `export const localRestaurants = [`
+
+- On `/screens/Home.js`
+
+  - ```js
+    ...
+    import React, { useState } from 'react';
+    import RestaurantItems, { localRestaurants } from '../components/RestaurantItems';
+    export default function Home() {
+      const [restaurantData, setRestaurantData] = useState(localRestaurants);
+
+      return (
+        ...
+            <RestaurantItems restaurantData={restaurantData} />
+            ...
+    ```
+
+- On `/components/RestaurantItems.js`
+
+  - ```js
+    ...
+    export default function RestaurantItems({ restaurantData }) {
+      return (
+        <TouchableOpacity activeOpacity={1} style={{ marginBottom: 30 }}>
+          {restaurantData.map((restaurant, index) => (
+            ...
+    ```
