@@ -387,3 +387,106 @@
           {restaurantData.map((restaurant, index) => (
             ...
     ```
+
+## Get Restaurant Data by using Yelp API
+
+- Login [Yelp Fusion](https://fusion.yelp.com/) and create App
+
+  - Copy API Key from Manage App
+
+- [Yelp Businesses Search API](https://www.yelp.com/developers/documentation/v3/business_search)
+
+  - Request: `GET https://api.yelp.com/v3/businesses/search`
+
+  - Parameters:
+
+    - `term`: Optional. Search term, for example "food" or "restaurants". The term may also be business names, such as "Starbucks". If term is not included the endpoint will default to searching across businesses from a small number of popular categories.
+
+    - `location`: Required if either latitude or longitude is not provided. This string indicates the geographic area to be used when searching for businesses. Examples: "New York City", "NYC", "350 5th Ave, New York, NY 10118". Businesses returned in the response may not be strictly within the specified location.
+
+    - `limit`: Optional. Number of business results to return. By default, it will return 20. Maximum is 50.
+
+    - `sort_by`: Optional. Suggestion to the search algorithm that the results be sorted by one of the these modes: best_match, rating, review_count or distance. The default is best_match. Note that specifying the sort_by is a suggestion (not strictly enforced) to Yelp's search, which considers multiple input parameters to return the most relevant results. For example, the rating sort is not strictly sorted by the rating value, but by an adjusted rating value that takes into account the number of ratings, similar to a Bayesian average. This is to prevent skewing results to businesses with a single review.
+
+    - `price`: Optional. Pricing levels to filter the search result with: 1 = $, 2 = $$, 3 = $$$, 4 = $$$$. The price filter can be a list of comma delimited pricing levels. For example, "1, 2, 3" will filter the results to show the ones that are $, $$, or $$$.
+
+  - Response Body
+
+    - ```json
+      Object {
+        "businesses": Array [
+          Object {
+            "alias": "the-noble-lion-victoria",
+            "categories": Array [
+              Object {
+                "alias": "bars",
+                "title": "Bars",
+              },
+              Object {
+                "alias": "modern_european",
+                "title": "Modern European",
+              },
+            ],
+            "coordinates": Object {
+              "latitude": 44.85956608282057,
+              "longitude": -93.66213900674693,
+            },
+            "display_phone": "(952) 855-1008",
+            "distance": 493.91605461274867,
+            "id": "BceBO94D8LuaWXh4dIix8Q",
+            "image_url": "https://s3-media4.fl.yelpcdn.com/bphoto/b35ernBwh-epbMyEM1OCWA/o.jpg",
+            "is_closed": false,
+            "location": Object {
+              "address1": "7940 Victoria Dr",
+              "address2": null,
+              "address3": "",
+              "city": "Victoria",
+              "country": "US",
+              "display_address": Array [
+                "7940 Victoria Dr",
+                "Victoria, MN 55386",
+              ],
+              "state": "MN",
+              "zip_code": "55386",
+            },
+            "name": "The Noble Lion",
+            "phone": "+19528551008",
+            "price": "$$$",
+            "rating": 4.5,
+            "review_count": 97,
+            "transactions": Array [],
+            "url": "https://www.yelp.com/biz/the-noble-lion-victoria?adjust_creative=fcRa7SKs-dld0zb14Rv0vw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=fcRa7SKs-dld0zb14Rv0vw",
+          },
+      ```
+
+- On `/screens/Home.js`
+
+  - ```js
+    ...
+    const YELP_API_KEY = 'Wo1lWWoA_GpiN3NgeVtJkD2NZWkEfaHa7PImdYcQjDqKtj6cpmhA_YJThcMaFXRIh-IR2NUxOrwZKjg4kid9ip-aY5FDb5ZSxx7heK1IzdCRuDgS3kfOre37_gO9YnYx';
+
+    export default function Home() {
+      const [restaurantData, setRestaurantData] = useStatelocalRestaurants);
+      const getRestaurantFromYelp = () => {
+        const yelpUrl =
+          'https://api.yelp.com/v3/businesses/search?term=restaurants&location=Victoria';
+
+        const apiOptions = {
+          headers: {
+            Authorization: `Bearer ${YELP_API_KEY}`,
+          },
+        };
+
+        return fetch(yelpUrl, apiOptions)
+          .then((res) => res.json())
+          .then((json) => {
+            setRestaurantData(json.businesses);
+            console.log(json);
+          });
+      };
+
+      useEffect(() => {
+        getRestaurantFromYelp();
+      }, []);
+      ...
+    ```
