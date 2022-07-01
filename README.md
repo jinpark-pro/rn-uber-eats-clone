@@ -581,3 +581,47 @@
     ```
 
 - On `/components/HeaderTab.js`, set `activeTab, setActiveTab` as props of `HeaderTabs`
+
+## No Pickup or Delivery
+
+- On `/screens/Home.js`
+
+  - ```js
+    json.businesses.filter(
+      (business) =>
+        business.transactions.includes(activeTab.toLowerCase()) ||
+        business.transactions.length == 0
+    );
+    ```
+
+- On `/components/RestaurantItems.js`
+
+  - ```js
+    ...
+              <RestaurantInfo
+                name={restaurant.name}
+                rating={restaurant.rating}
+                transactions={
+                  restaurant.transactions === undefined ||
+                  restaurant.transactions.length === 0
+                    ? 'No Pickup or Delivery'
+                    : restaurant.transactions.join(', ')
+                }
+              />
+              ...
+        <Image
+          source={{
+            uri:
+              image != ''
+                ? image
+                : 'https://stock.adobe.com/search/images?k=no%20image%20available',
+          }}
+          ...
+    const RestaurantInfo = ({ name, rating, transactions }) => (
+      ...
+        <View>
+        ...
+          <Text style={{ fontSize: 13, color: 'grey' }}>{transactions}</Text>
+        </View>
+        ...
+    ```

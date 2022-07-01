@@ -41,7 +41,16 @@ export default function RestaurantItems({ restaurantData }) {
           style={{ marginTop: 10, padding: 15, backgroundColor: 'white' }}
         >
           <RestaurantImage image={restaurant.image_url} />
-          <RestaurantInfo name={restaurant.name} rating={restaurant.rating} />
+          <RestaurantInfo
+            name={restaurant.name}
+            rating={restaurant.rating}
+            transactions={
+              restaurant.transactions === undefined ||
+              restaurant.transactions.length === 0
+                ? 'No Pickup or Delivery'
+                : restaurant.transactions.join(', ')
+            }
+          />
         </View>
       ))}
     </TouchableOpacity>
@@ -52,7 +61,10 @@ const RestaurantImage = ({ image }) => (
   <>
     <Image
       source={{
-        uri: image,
+        uri:
+          image != ''
+            ? image
+            : 'https://stock.adobe.com/search/images?k=no%20image%20available',
       }}
       style={{ width: '100%', height: 180 }}
     />
@@ -62,7 +74,7 @@ const RestaurantImage = ({ image }) => (
   </>
 );
 
-const RestaurantInfo = ({ name, rating }) => (
+const RestaurantInfo = ({ name, rating, transactions }) => (
   <View
     style={{
       flexDirection: 'row',
@@ -74,7 +86,7 @@ const RestaurantInfo = ({ name, rating }) => (
   >
     <View>
       <Text style={{ fontSize: 15, fontWeight: 'bold' }}>{name}</Text>
-      <Text style={{ fontSize: 13, color: 'grey' }}>30-35 min</Text>
+      <Text style={{ fontSize: 13, color: 'grey' }}>{transactions}</Text>
     </View>
     <View
       style={{

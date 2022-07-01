@@ -27,8 +27,10 @@ export default function Home() {
       .then((res) => res.json())
       .then((json) => {
         setRestaurantData(
-          json.businesses.filter((business) =>
-            business.transactions.includes(activeTab.toLowerCase())
+          json.businesses.filter(
+            (business) =>
+              business.transactions.includes(activeTab.toLowerCase()) ||
+              business.transactions.length == 0
           )
         );
       });
