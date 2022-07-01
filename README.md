@@ -554,3 +554,30 @@
             }}
             ...
     ```
+
+## Search Pickup or Delivery
+
+- On `/screens/Home.js`
+
+  - ```js
+      ...
+      const [activeTab, setActiveTab] = useState('Delivery');
+      ...
+        return fetch(yelpUrl, apiOptions)
+          .then((res) => res.json())
+          .then((json) => {
+            setRestaurantData(
+              json.businesses.filter((business) =>
+                business.transactions.includes(activeTab.toLowerCase())
+              ...
+      useEffect(() => {
+        getRestaurantFromYelp();
+      }, [city, activeTab]);
+
+      return (
+        ...
+            <HeaderTabs activeTab={activeTab} setActiveTab={setActiveTab} />
+            ...
+    ```
+
+- On `/components/HeaderTab.js`, set `activeTab, setActiveTab` as props of `HeaderTabs`
