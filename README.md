@@ -490,3 +490,67 @@
       }, []);
       ...
     ```
+
+## Search Places Autocomplete
+
+- Google Cloud Platform
+
+  1. Create new account
+  2. APIs & Services
+  3. Enable APIs and Services
+  4. Search `places` and Click `Places API`
+  5. Click Enable button
+  6. Click `Places API`
+  7. Click `Credentials`
+  8. Click `Create Credentials` and Click `API Key`
+  9. Copy API key and Click `Edit API key`
+  10. Check `Restrict key`
+  11. Type `places` and Click `Places API` on `Select APIs`
+  12. Click `Save` button
+
+- Add the API key to `components/SearchBar.js`
+
+  - ```js
+    const PLACES_API_KEY = 'AIzaSyCiNj8qUm4kyuRuTxCJcb8Z-NpjYbn9kis';
+    ...
+      <GooglePlacesAutocomplete
+        query={{ key: PLACES_API_KEY }}
+        ...
+    ```
+
+  - When the places won't be autocompleted, set the project to billing account.
+
+- On `/screens/Home.js`
+
+  - ```js
+    ...
+    export default function Home() {
+      ...
+      const [city, setCity] = useState('Victoria');
+      const getRestaurantFromYelp = () => {
+        const yelpUrl = `https://api.yelp.com/v3/businesses/search?term=restaurants&location=${city}`;
+        ...
+      };
+
+      useEffect(() => {
+        getRestaurantFromYelp();
+      }, [city]);
+      return (
+        ...
+            <SearchBar cityHandler={setCity} />
+          ...
+    ```
+
+- On `/components/SearchBar.js`
+
+  - ```js
+    export default function SearchBar({ cityHandler }) {
+      ...
+          <GooglePlacesAutocomplete
+            ...
+            onPress={(data, details = null) => {
+              const city = data.description.split(',')[0];
+              cityHandler(city);
+            }}
+            ...
+    ```
