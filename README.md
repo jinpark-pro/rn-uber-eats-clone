@@ -625,3 +625,126 @@
         </View>
         ...
     ```
+
+## Bottom Tabs Component
+
+- Create `/components/BottomTabs.js`
+
+  - ```js
+    import { View, Text } from 'react-native';
+    import React from 'react';
+
+    export default function BottomTabs() {
+      return (
+        <View>
+          <Text>BottomTabs</Text>
+        </View>
+      );
+    }
+    ```
+
+- `yarn add react-native-elements`
+
+- On `/screens/Home.js`
+
+  - ```js
+    import { Divider } from 'react-native-elements';
+    import BottomTabs from '../components/BottomTabs';
+    ...
+          <Divider width={1} />
+          <BottomTabs />
+        </SafeAreaView>
+      ...
+    ```
+
+- Error: Unable to resolve module react-native-safe-area-context
+
+  - `expo install react-native-safe-area-context`
+
+  - On `/App.js`, add `SafeAreaProvide`
+
+    - ```js
+      import { SafeAreaProvider } from 'react-native-safe-area-context';
+      import Home from './screens/Home';
+
+      export default function App() {
+        return (
+          <SafeAreaProvider>
+            <Home />
+          </SafeAreaProvider>
+        );
+      }
+      ```
+
+  - On `/screens/Home.js`, import `SafeAreaView`
+
+    - ```js
+      import { View, ScrollView } from 'react-native';
+      import { SafeAreaView } from 'react-native-safe-area-context';
+      ...
+      ```
+
+- On `/components/BottomTabs.js`
+
+  - ```js
+    import { View, Text, TouchableOpacity } from 'react-native';
+    import React from 'react';
+    import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+
+    export default function BottomTabs() {
+      return (
+        <View
+          style={{
+            flexDirection: 'row',
+            margin: 10,
+            marginHorizontal: 30,
+            justifyContent: 'space-between',
+          }}
+        >
+          <Icon icon='home' text='Home' />
+          <Icon icon='search' text='Browse' />
+          <Icon icon='shopping-bag' text='Grocery' />
+          <Icon icon='receipt' text='Orders' />
+          <Icon icon='user' text='Account' />
+        </View>
+      );
+    }
+
+    const Icon = (props) => (
+      <TouchableOpacity>
+        <View>
+          <FontAwesome5
+            name={props.icon}
+            size={25}
+            style={{ marginBottom: 3, alignSelf: 'center' }}
+          />
+          <Text>{props.text}</Text>
+        </View>
+      </TouchableOpacity>
+    );
+    ```
+
+- Error: undefined Unable to resolve module @expo/vector-icons/FortAwesome5
+
+  - `yarn cache clean`
+
+# Errors
+
+## no such file or directory react-is
+
+- React native throws error: no such file or directory
+
+  1. Close all the open terminal windows. Even of other projects.
+  2. Restart the Metro bundler.
+
+## Unable to resolve module react-native-safe-area-context
+
+- `expo install react-native-safe-area-context`
+
+- Import the `SafeAreaView` component from the `react-native-safe-area-content` library and replace it with he one from React Native.
+
+## undefined Unable to resolve module @expo/vector-icons/FortAwesome5
+
+- Clear the cache of react native project
+
+  - `yarn cache clean`
