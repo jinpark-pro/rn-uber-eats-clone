@@ -728,6 +728,95 @@
 
   - `yarn cache clean`
 
+## About Component
+
+- Move components from `/components/` to `/components/home/`, and change the locations on `Categories.js` and `Home.js`
+
+- Create `/components/restaurantDetail/About.js`
+
+  - ```js
+    import { View, Text, Image } from 'react-native';
+    import React from 'react';
+
+    const image =
+      'http://cdn.cnn.com/cnnnext/dam/assets/181114130138-korean-food-2620014201204004k-jeonju-bibimbap.jpg';
+    const title = 'Korean Cuisine';
+    const description = 'Korean - Comfort Food - $$ - (2900+)';
+
+    export default function About() {
+      return (
+        <View>
+          <RestaurantImage image={image} />
+          <RestaurantTitle title={title} />
+          <RestaurantDescription description={description} />
+        </View>
+      );
+    }
+
+    const RestaurantImage = (props) => (
+      <Image
+        source={{ uri: props.image }}
+        style={{ width: '100%', height: 180 }}
+      />
+    );
+
+    const RestaurantTitle = (props) => (
+      <Text
+        style={{
+          fontSize: 29,
+          fontWeight: '600',
+          marginTop: 10,
+          marginHorizontal: 15,
+        }}
+      >
+        {props.title}
+      </Text>
+    );
+
+    const RestaurantDescription = (props) => (
+      <Text
+        style={{
+          fontSize: 15,
+          fontWeight: '400',
+          marginTop: 10,
+          marginHorizontal: 15,
+        }}
+      >
+        {props.description}
+      </Text>
+    );
+    ```
+
+- Create `/screens/RestaurantDetail.js`
+
+  - ```js
+    import { View } from 'react-native';
+    import React from 'react';
+    import { Divider } from 'react-native-elements';
+    import About from '../components/restaurantDetail/About';
+
+    export default function RestaurantDetail() {
+      return (
+        <View>
+          <About />
+          <Divider width={1.8} style={{ marginVertical: 20 }} />
+        </View>
+      );
+    }
+    ```
+
+- On `App.js`
+
+  - ```js
+    import RestaurantDetail from './screens/RestaurantDetail';
+
+    export default function App() {
+      return <RestaurantDetail />;
+    }
+    ```
+
+---
+
 # Errors
 
 ## no such file or directory react-is
