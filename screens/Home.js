@@ -9,9 +9,7 @@ import RestaurantItems, {
 } from '../components/home/RestaurantItems';
 import { Divider } from 'react-native-elements';
 import BottomTabs from '../components/home/BottomTabs';
-
-const YELP_API_KEY =
-  'Wo1lWWoA_GpiN3NgeVtJkD2NZWkEfaHa7PImdYcQjDqKtj6cpmhA_YJThcMaFXRIh-IR2NUxOrwZKjg4kid9ip-aY5FDb5ZSxx7heK1IzdCRuDgS3kfOre37_gO9YnYx';
+import { YELP_API_KEY } from '@env';
 
 export default function Home() {
   const [restaurantData, setRestaurantData] = useState(localRestaurants);
@@ -22,7 +20,7 @@ export default function Home() {
 
     const apiOptions = {
       headers: {
-        Authorization: `Bearer ${YELP_API_KEY}`,
+        Authorization: `Bearer ${String(YELP_API_KEY)}`,
       },
     };
 

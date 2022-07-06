@@ -3,13 +3,13 @@ import React from 'react';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import { PLACES_API_KEY } from '@env';
 
-const PLACES_API_KEY = 'AIzaSyCiNj8qUm4kyuRuTxCJcb8Z-NpjYbn9kis';
 export default function SearchBar({ cityHandler }) {
   return (
     <View style={{ marginTop: 15, flexDirection: 'row' }}>
       <GooglePlacesAutocomplete
-        query={{ key: PLACES_API_KEY }}
+        query={{ key: String(PLACES_API_KEY) }}
         onPress={(data, details = null) => {
           const city = data.description.split(',')[0];
           cityHandler(city);

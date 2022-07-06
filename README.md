@@ -463,7 +463,7 @@
 
   - ```js
     ...
-    const YELP_API_KEY = 'Wo1lWWoA_GpiN3NgeVtJkD2NZWkEfaHa7PImdYcQjDqKtj6cpmhA_YJThcMaFXRIh-IR2NUxOrwZKjg4kid9ip-aY5FDb5ZSxx7heK1IzdCRuDgS3kfOre37_gO9YnYx';
+    const YELP_API_KEY = 'apikey';
 
     export default function Home() {
       const [restaurantData, setRestaurantData] = useStatelocalRestaurants);
@@ -511,7 +511,7 @@
 - Add the API key to `components/SearchBar.js`
 
   - ```js
-    const PLACES_API_KEY = 'AIzaSyCiNj8qUm4kyuRuTxCJcb8Z-NpjYbn9kis';
+    const PLACES_API_KEY = 'apikey';
     ...
       <GooglePlacesAutocomplete
         query={{ key: PLACES_API_KEY }}
@@ -909,6 +909,69 @@
     ```
 
 - On `/screens/RestaurantDetail.js`, add `MenuItems`
+
+## Use .env
+
+- `yarn add react-native-dotenv`
+
+- Create `.prettierignore` and add `.env`
+
+- Create `.env`
+
+  - ```
+    YELP_API_KEY="apikey"
+    PLACES_API_KEY="apikey"
+    ```
+
+- Add `.env` and `.prettierignore` to `.gitignore`
+
+- On `babel.config.js`, add the plugin
+
+  - ```js
+    module.exports = function (api) {
+      api.cache(true);
+      return {
+        presets: ['babel-preset-expo'],
+        plugins: [
+          [
+            'module:react-native-dotenv',
+            {
+              moduleName: '@env',
+              path: '.env',
+              blacklist: null,
+              whitelist: null,
+              safe: false,
+              allowUndefined: true,
+            },
+          ],
+        ],
+      };
+    };
+    ```
+
+- On `/components/home/SearchBar.js`
+
+  - ```js
+    ...
+    import { PLACES_API_KEY } from '@env';
+
+    export default function SearchBar({ cityHandler }) {
+      ...
+          <GooglePlacesAutocomplete
+            query={{ key: String(PLACES_API_KEY) }}
+            ...
+    ```
+
+- On `/screens/Home.js`
+
+  - ```js
+    import { YELP_API_KEY } from '@env';
+    ...
+        const apiOptions = {
+          headers: {
+            Authorization: `Bearer ${String(YELP_API_KEY)}`,
+            ...
+    ```
 
 ---
 
