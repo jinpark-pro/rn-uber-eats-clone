@@ -1003,6 +1003,129 @@
     ...
     ```
 
+## Navigation
+
+- ```bash
+  yarn add @react-navigation/native
+  yarn add @react-navigation/stack
+  yarn add react-native-gesture-handler
+  ```
+
+- Create `navigation.js`
+
+  - ```js
+    import React from 'react';
+    import { createStackNavigator } from '@react-navigation/stack';
+    import { NavigationContainer } from '@react-navigation/native';
+    import Home from './screens/Home';
+    import RestaurantDetail from './screens/RestaurantDetail';
+
+    export default function RootNavigation() {
+      const Stack = createStackNavigator();
+
+      const screenOptions = {
+        headerShown: false,
+      };
+
+      return (
+        <NavigationContainer>
+          <Stack.Navigator
+            initialRouteName='Home'
+            screenOptions={screenOptions}
+          >
+            <Stack.Screen name='Home' component={Home} />
+            <Stack.Screen
+              name='RestaurantDetail'
+              component={RestaurantDetail}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      );
+    }
+    ```
+
+- On `App.js`
+
+  - ```js
+    import RootNavigation from './navigation';
+
+    export default function App() {
+      return <RootNavigation />;
+    }
+    ```
+
+- On `/screens/Home.js`
+
+  - ```js
+    ...
+    export default function Home({ navigation }) {
+      ...
+            <RestaurantItems
+              restaurantData={restaurantData}
+              navigation={navigation}
+            />
+          ...
+    ```
+
+- On `/components/home/RestaurantItems.js`
+
+  - ```js
+    ...
+    export default function RestaurantItems({ navigation, ...props }) {
+      return (
+        <>
+          {props.restaurantData.map((restaurant, index) => (
+            <TouchableOpacity
+              key={index}
+              activeOpacity={1}
+              onPress={() =>
+                navigation.navigate('RestaurantDetail', {
+                  name: restaurant.name,
+                  image: restaurant.image_url,
+                  price: restaurant.price,
+                  reviews: restaurant.review_count,
+                  rating: restaurant.rating,
+                  categories: restaurant.categories,
+                })
+              }
+            >
+              <View
+                style={{ marginTop: 10, padding: 15, backgroundColor: 'white' }}
+              >
+                ...
+                />
+              </View>
+            </TouchableOpacity>
+          ...
+    ```
+
+- On `/screens/RestaurantDetail.js`
+
+  - ```js
+    ...
+    export default function RestaurantDetail({ route }) {
+      return (
+        <View>
+          <About route={route} />
+          ...
+    ```
+
+- On `/components/RestaurantDetail/About.js`
+
+  - ```js
+    import { View, Text, Image } from 'react-native';
+    import React from 'react';
+
+    export default function About(props) {
+      const { name, image, price, reviews, rating, categories } =
+        props.route.params;
+      const formattedCategories = categories.map((cat) => cat.title).join(' - ');
+      const description = `${formattedCategories} ${
+        price ? ' - ' + price : ''
+      } - ${rating} (${reviews}+)`;
+      ...
+    ```
+
 ---
 
 # Errors
