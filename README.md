@@ -1126,6 +1126,26 @@
       ...
     ```
 
+## Add Checkboxes to Menu Items
+
+- ```bash
+  yarn add react-native-bouncy-checkbox
+  yarn add tslib
+  ```
+
+- On `/components/restaurantDetail/MenuItems.js`
+
+  - ```js
+    import BouncyCheckbox from 'react-native-bouncy-checkbox';
+    ...
+                 <View style={styles.menuItemStyle}>
+                  <BouncyCheckbox
+                    iconStyle={{ borderColor: 'lightgray', borderRadius: 0 }}
+                    fillColor='green'
+                  />
+                  ...
+    ```
+
 ---
 
 # Errors
