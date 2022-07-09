@@ -1126,7 +1126,7 @@
       ...
     ```
 
-## Add Checkboxes to Menu Items
+## Add Checkboxes to Menu Items and Modify Style of Menu Items
 
 - ```bash
   yarn add react-native-bouncy-checkbox
@@ -1138,12 +1138,85 @@
   - ```js
     import BouncyCheckbox from 'react-native-bouncy-checkbox';
     ...
-                 <View style={styles.menuItemStyle}>
-                  <BouncyCheckbox
-                    iconStyle={{ borderColor: 'lightgray', borderRadius: 0 }}
-                    fillColor='green'
-                  />
-                  ...
+        <ScrollView showsVerticalScrollIndicator={false} style={{ height: '56%' }}>
+          ...
+              <View style={styles.menuItemStyle}>
+                <BouncyCheckbox
+                  iconStyle={{ borderColor: 'lightgray', borderRadius: 0 }}
+                  fillColor='green'
+                />
+                ...
+    const FoodImage = (props) => (
+      <View style={{ width: '20%' }}>
+        <Image
+          source={{ uri: props.food.image }}
+          style={{
+            width: '100%',
+            resizeMode: 'cover',
+            height: 60,
+            borderRadius: 8,
+          }}
+        />
+      </View>
+    );
+    ```
+
+## Create View Cart
+
+- Create `/components/restaurantDetail/ViewCart.js`
+
+  - ```js
+    import { View, Text, TouchableOpacity } from 'react-native';
+    import React from 'react';
+
+    export default function ViewCart() {
+      return (
+        <View
+          style={{
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexDirection: 'row',
+            position: 'absolute',
+            bottom: 16,
+            zIndex: 999,
+            opacity: 0.7,
+          }}
+        >
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              width: '100%',
+            }}
+          >
+            <TouchableOpacity
+              style={{
+                marginTop: 20,
+                backgroundColor: 'black',
+                alignItems: 'center',
+                padding: 13,
+                borderRadius: 30,
+                width: 300,
+                position: 'relative',
+              }}
+            >
+              <Text style={{ color: 'white' }}>View Cart</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      );
+    }
+    ```
+
+- On `/screens/RestaurantDetail.js`
+
+  - ```js
+    import ViewCart from '../components/restaurantDetail/ViewCart';
+    ...
+          <ViewCart navigation={navigation} restaurantName={route.params.name} />
+        </View>
+      ...
     ```
 
 ---
