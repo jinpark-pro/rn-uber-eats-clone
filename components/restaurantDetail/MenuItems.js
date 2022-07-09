@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
 
 export default function MenuItems() {
   return (
-    <ScrollView showsVerticalScrollIndicator={false} style={{ height: '52%' }}>
+    <ScrollView showsVerticalScrollIndicator={false} style={{ height: '56%' }}>
       {foods.map((food, index) => (
         <View key={index}>
           <View style={styles.menuItemStyle}>
@@ -75,7 +75,7 @@ export default function MenuItems() {
 }
 
 const FoodInfo = (props) => (
-  <View style={{ width: 240, justifyContent: 'space-evenly' }}>
+  <View style={{ width: '70%', justifyContent: 'space-evenly' }}>
     <Text style={styles.titleStyle}>{props.food.title}</Text>
     <Text>{props.food.description}</Text>
     <Text>{props.food.price}</Text>
@@ -83,10 +83,15 @@ const FoodInfo = (props) => (
 );
 
 const FoodImage = (props) => (
-  <View>
+  <View style={{ width: '20%' }}>
     <Image
       source={{ uri: props.food.image }}
-      style={{ width: 100, height: 100, borderRadius: 8 }}
+      style={{
+        width: '100%',
+        resizeMode: 'cover',
+        height: 60,
+        borderRadius: 8,
+      }}
     />
   </View>
 );
