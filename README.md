@@ -1219,6 +1219,134 @@
       ...
     ```
 
+## Use Redux to Add and Remove Menu Items
+
+- Redux:
+
+  - A single store containing "global" state
+
+  - Dispatching plain object actions to the store when something happens in the app
+
+  - Pure reducer functions looking at those actions and returning immutably updated state
+
+- `yarn add redux react-redux @reduxjs/toolkit`
+
+- Create `/redux/reducers/cartReducer.js`
+
+  - ```js
+    let defaultState = {
+      selectedItems: { items: [], restaurantName: '' },
+    };
+
+    let cartReducer = (state = defaultState, action) => {
+      switch (action.type) {
+        case 'ADD_TO_CART': {
+          let newState = { ...state };
+          if (action.payload.checkboxValue) {
+            console.log('checked');
+            newState.selectedItems = {
+              items: [...newState.selectedItems.items, action.payload],
+              restaurantName: action.payload.restaurantName,
+            };
+          } else {
+            console.log('unchecked');
+            newState.selectedItems = {
+              items: [
+                ...newState.selectedItems.items.filter(
+                  (item) => item.title != action.payload.title
+                ),
+              ],
+              restaurantName: action.payload.restaurantName,
+            };
+          }
+
+          console.log(newState, 'newState');
+          return newState;
+        }
+        default:
+          return state;
+      }
+    };
+
+    export default cartReducer;
+    ```
+
+- Create `/redux/reducers/index.js`
+
+  - ```js
+    import { combineReducers } from 'redux';
+    import cartReducer from './cartReducer';
+
+    let reducers = combineReducers({
+      cartReducer: cartReducer,
+    });
+
+    const rootReducer = (state, action) => {
+      return reducers(state, action);
+    };
+
+    export default rootReducer;
+    ```
+
+- Create `/redux/store.js`
+
+  - ```js
+    import { configureStore } from '@reduxjs/toolkit';
+    import reducer from './reducers/index';
+
+    export default function store(initialState) {
+      return configureStore({ reducer, initialState });
+    }
+    ```
+
+- On `/navigation.js`
+
+  - ```js
+    import store from './redux/store';
+    ...
+      return (
+        <ReduxProvider store={store()}>
+          ...
+        </ReduxProvider>
+      );
+    }
+    ```
+
+- On `/screens/RestaurantDetail.js`
+
+  - ```js
+    ...
+    export default function RestaurantDetail({ route, navigation }) {
+      return (
+        ...
+          <MenuItems restaurantName={route.params.name} />
+          ...
+    ```
+
+- On `/components/restaurantDetail/MenuItems.js`
+
+  - ```js
+    import { useDispatch } from 'react-redux';
+    ...
+    export default function MenuItems({ restaurantName }) {
+      const dispatch = useDispatch();
+      const selectedItems = (item, checkboxValue) =>
+        dispatch({
+          type: 'ADD_TO_CART',
+          payload: {
+            ...item,
+            restaurantName: restaurantName,
+            checkboxValue: checkboxValue,
+          },
+        });
+        ...
+                <BouncyCheckbox
+                  ...
+                  onPress={(checkboxValue) => selectedItems(food, checkboxValue)}
+                />
+                ...
+    ```
+
 ---
 
 # Errors
