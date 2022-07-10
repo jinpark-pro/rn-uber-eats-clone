@@ -1347,6 +1347,57 @@
                 ...
     ```
 
+## Use Redux to Show Total Amount on the ViewCart
+
+- On `/components/restaurantDetail/ViewCart.js`
+
+  - ```js
+    ...
+    import { useSelector } from 'react-redux';
+
+    export default function ViewCart() {
+      const items = useSelector((state) => state.cartReducer.selectedItems.items);
+      const total = items
+        .map((item) => Number(item.price.replace('$', '')))
+        .reduce((prev, curr) => prev + curr, 0);
+
+      const totalUSD = total.toLocaleString('en', {
+        style: 'currency',
+        currency: 'USD',
+      });
+
+      return (
+        <>
+          {total ? (
+            <View
+              ...
+                <TouchableOpacity
+                  style={{
+                    marginTop: 20,
+                    backgroundColor: 'black',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    padding: 20,
+                    borderRadius: 30,
+                    width: 300,
+                    position: 'relative',
+                  }}
+                >
+                  <Text style={{ color: 'white', fontSize: 20, marginRight: 30 }}>
+                    View Cart
+                  </Text>
+                  <Text style={{ color: 'white', fontSize: 20 }}>{totalUSD}</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          ) : (
+            <></>
+          )}
+        </>
+      );
+    }
+    ```
+
 ---
 
 # Errors
