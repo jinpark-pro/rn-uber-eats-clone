@@ -1398,6 +1398,24 @@
     }
     ```
 
+## Keep Checkbox checked
+
+- On `/components/restaurantDetail/MenuItems.js`
+
+  - ```js
+    import { useDispatch, useSelector } from 'react-redux';
+    ...
+      const cartItems = useSelector(
+        (state) => state.cartReducer.selectedItems.items
+      );
+      const isFoodInCart = (food, cartItems) =>
+        Boolean(cartItems.find((item) => item.title === food.title));
+    ...
+                <BouncyCheckbox
+                  ...
+                  isChecked={isFoodInCart(food, cartItems)}
+    ```
+
 ---
 
 # Errors
