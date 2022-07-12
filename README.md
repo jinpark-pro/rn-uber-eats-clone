@@ -1416,6 +1416,146 @@
                   isChecked={isFoodInCart(food, cartItems)}
     ```
 
+## Add Modal to ViewCart
+
+- `yarn add react-native-reanimated reanimated-bottom-sheet`
+
+- On `babel.config.js`
+
+  - ```js
+    plugins: [
+      ...
+      'react-native-reanimated/plugin',
+    ],
+    ```
+
+- On `/components/restaurantDetail/OrderItem.js`
+
+  - ```js
+    import { View, Text } from 'react-native';
+    import React from 'react';
+
+    export default function OrderItem({ item }) {
+      const { title, price } = item;
+
+      return (
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            padding: 20,
+            borderBottomWidth: 1,
+            borderBottomColor: '#999',
+            backgroundColor: 'white',
+            color: 'black',
+          }}
+        >
+          <Text style={{ fontWeight: '600', fontSize: 16 }}>{title}</Text>
+          <Text style={{ opacity: 0.7, fontSize: 16 }}>{price}</Text>
+        </View>
+      );
+    }
+    ```
+
+- On `/components/restaurantDetail/ViewCart.js`
+
+  - ```js
+    ...
+    import { ..., Modal, StyleSheet } from 'react-native';
+    import React, { useState } from 'react';
+    import OrderItem from './OrderItem';
+
+    export default function ViewCart() {
+      const [modalVisible, setModalVisible] = useState(false);
+      const { items, restaurantName } = useSelector(
+        (state) => state.cartReducer.selectedItems
+      );
+      ...
+      const styles = StyleSheet.create({
+        modalContainer: {
+          flex: 1,
+          justifyContent: 'flex-end',
+          backgroundColor: 'rgba(0,0,0,0.7)',
+        },
+        modalCheckoutContainer: {
+          backgroundColor: 'white',
+          padding: 16,
+          height: 500,
+          borderWidth: 1,
+        },
+        restaurantName: {
+          textAlign: 'center',
+          fontWeight: '600',
+          fontSize: 18,
+          marginBottom: 10,
+        },
+        subtotalContainer: {
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          padding: 20,
+        },
+        subtotalText: {
+          textAlign: 'left',
+          fontWeight: '600',
+          fontSize: 15,
+          marginBottom: 10,
+        },
+      });
+      const checkoutModalContent = () => {
+        return (
+          <>
+            <View style={styles.modalContainer}>
+              <View style={styles.modalCheckoutContainer}>
+                <Text style={styles.restaurantName}>{restaurantName}</Text>
+                {items.map((item, index) => (
+                  <OrderItem key={index} item={item} />
+                ))}
+                <View style={styles.subtotalContainer}>
+                  <Text style={styles.subtotalText}>Subtotal</Text>
+                  <Text>{totalUSD}</Text>
+                </View>
+                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                  <TouchableOpacity
+                    style={{
+                      marginTop: 10,
+                      width: 300,
+                      paddingVertical: 13,
+                      paddingHorizontal: 40,
+                      backgroundColor: 'black',
+                      borderRadius: 30,
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      position: 'relative',
+                    }}
+                    onPress={() => setModalVisible(false)}
+                  >
+                    <Text style={{ color: 'white', fontSize: 20 }}>Checkout</Text>
+                    <Text style={{ color: 'white', fontSize: 15 }}>
+                      {total ? totalUSD : ''}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          </>
+        );
+      };
+
+      return (
+        <>
+          <Modal
+            animationType='slide'
+            visible={modalVisible}
+            transparent={true}
+            onRequestClose={() => setModalVisible(false)}
+          >
+            {checkoutModalContent()}
+          </Modal>
+          {total ? (
+            ...
+    ```
+
 ---
 
 # Errors
@@ -1438,3 +1578,14 @@
 - Clear the cache of react native project
 
   - `yarn cache clean`
+
+## Export namespace should be first transformed by `@babel/plugin-proposal-export-namespace-from`
+
+- Add reanimated's babel plugin on `babel.config.js`
+
+  - ```js
+    plugins: [
+      ...
+      'react-native-reanimated/plugin',
+    ],
+    ```
