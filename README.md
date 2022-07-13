@@ -1556,6 +1556,80 @@
             ...
     ```
 
+## Add Firebase Database
+
+- Create a project on Firebase
+
+  - web app - register app
+
+  - use npm and copy the code
+
+- `expo install firebase@9.6.11`
+
+- Create `firebase.js` and paste the code
+
+  - ```js
+    import firebase from 'firebase/compat/app';
+    import {
+      FIREBASE_API_KEY,
+      FIREBASE_PROJECT_ID,
+      FIREBASE_MESSAGING_SENDER_ID,
+      FIREBASE_APP_ID,
+    } from '@env';
+
+    const firebaseConfig = {
+      apiKey: FIREBASE_API_KEY,
+      authDomain: FIREBASE_PROJECT_ID + '.firebaseapp.com',
+      projectId: FIREBASE_PROJECT_ID,
+      storageBucket: FIREBASE_PROJECT_ID + '.appspot.com',
+      messagingSenderId: FIREBASE_MESSAGING_SENDER_ID,
+      appId: FIREBASE_APP_ID,
+    };
+
+    !firebase.apps.length
+      ? firebase.initializeApp(firebaseConfig)
+      : firebase.app();
+
+    export default firebase;
+    ```
+
+- Go to Firebase Database on the project
+
+  1. Click Create Database
+     a. Choose Start in test mode
+     b. Click Next
+     c. Click Enable
+  2. Click Start collection
+     a. Collection ID: orders
+     b. Click Auto-ID
+     c. Click Save
+
+- On `/components/restaurantDetail/ViewCart.js`
+
+  - ```js
+    import firebase from '../../firebase';
+    import 'firebase/compat/firestore';
+    ...
+      const addOrderToFirebase = () => {
+        const db = firebase.firestore();
+        db.collection('orders').add({
+          items: items,
+          restaurantName: restaurantName,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        });
+        setModalVisible(false);
+      };
+    ...
+                  <TouchableOpacity
+                    ...
+                    onPress={() => {
+                      addOrderToFirebase();
+                    }}
+                  >
+                    <Text style={{ color: 'white', fontSize: 20 }}>Checkout</Text>
+                    ...
+    ```
+
 ---
 
 # Errors
@@ -1588,4 +1662,13 @@
       ...
       'react-native-reanimated/plugin',
     ],
+    ```
+
+## While trying to resolve module ‘idb’ from file ... this package itself specifies a `main` module field that could not be resolved
+
+- The latest version has some issues. Downgrade to firebase@9.6.11
+
+  - ```bash
+    yarn remove firebase
+    expo install firebase@9.6.11
     ```
