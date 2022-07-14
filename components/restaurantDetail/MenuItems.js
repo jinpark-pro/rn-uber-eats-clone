@@ -3,40 +3,6 @@ import React from 'react';
 import { Divider } from 'react-native-elements';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import { useDispatch, useSelector } from 'react-redux';
-const foods = [
-  {
-    title: 'Bulgogi',
-    description:
-      'A juicy, savory dish of grilled marinated beef, bulgogi is Korean meat dishes.',
-    price: '$30.00',
-    image:
-      'https://img.theculturetrip.com/1440x/smart/wp-content/uploads/2019/07/hfnnc1.jpg',
-  },
-  {
-    title: 'Bibimbap',
-    description:
-      'Bibimbap is a bowl of mixed ingredients including rice, beef, vegetables, chili pepper paste, and a fried egg.',
-    price: '$10.00',
-    image:
-      'https://img.theculturetrip.com/1440x/smart/wp-content/uploads/2019/07/pnkyx3.jpg',
-  },
-  {
-    title: 'Samgyetang',
-    description:
-      'Samgyetang is a traditional soup made of chicken, garlic, rice, Korean ginseng, and spices.',
-    price: '$20.00',
-    image:
-      'https://img.theculturetrip.com/1440x/smart/wp-content/uploads/2019/07/epy79n.jpg',
-  },
-  {
-    title: 'Kimchi',
-    description:
-      'kimchi is a spicy and sour dish made up of fermented vegetables.',
-    price: '$4.00',
-    image:
-      'https://img.theculturetrip.com/1440x/smart/wp-content/uploads/2019/07/hy0wey.jpg',
-  },
-];
 
 const styles = StyleSheet.create({
   menuItemStyle: {
@@ -50,7 +16,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function MenuItems({ restaurantName }) {
+export default function MenuItems({ restaurantName, foods, hideCheckbox }) {
   const dispatch = useDispatch();
   const selectedItems = (item, checkboxValue) =>
     dispatch({
@@ -73,12 +39,16 @@ export default function MenuItems({ restaurantName }) {
       {foods.map((food, index) => (
         <View key={index}>
           <View style={styles.menuItemStyle}>
-            <BouncyCheckbox
-              iconStyle={{ borderColor: 'lightgray', borderRadius: 0 }}
-              fillColor='green'
-              onPress={(checkboxValue) => selectedItems(food, checkboxValue)}
-              isChecked={isFoodInCart(food, cartItems)}
-            />
+            {hideCheckbox ? (
+              <></>
+            ) : (
+              <BouncyCheckbox
+                iconStyle={{ borderColor: 'lightgray', borderRadius: 0 }}
+                fillColor='green'
+                onPress={(checkboxValue) => selectedItems(food, checkboxValue)}
+                isChecked={isFoodInCart(food, cartItems)}
+              />
+            )}
             <FoodInfo food={food} />
             <FoodImage food={food} />
           </View>
