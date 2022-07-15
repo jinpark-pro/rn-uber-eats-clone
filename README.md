@@ -1771,7 +1771,74 @@
         ...
     ```
 
-- ***
+## Add Loading Screen
+
+- on `/components/restaurantDetail/ViewCart.js`
+
+  - ```js
+    ...
+    import LottieView from 'lottie-react-native';
+
+    export default function ViewCart({ navigation }) {
+      const [loading, setLoading] = useState(false);
+      ...
+      const addOrderToFirebase = () => {
+        setLoading(true);
+        ...
+        db.collection('orders')
+          .add({
+            ...
+          })
+          .then(() => {
+            setTimeout(() => {
+              setLoading(false);
+              navigation.navigate('OrderCompleted');
+            }, 2000);
+          });
+      };
+      ...
+      const checkoutModalContent = () => {
+        return (
+          <>
+            <View style={styles.modalContainer}>
+              ...
+                  <TouchableOpacity
+                    ...
+                    onPress={() => {
+                      ...
+                      setModalVisible(false);
+                    }
+                    ...
+          {loading ? (
+            <View
+              style={{
+                backgroundColor: 'black',
+                position: 'absolute',
+                opacity: 0.6,
+                justifyContent: 'center',
+                alignItems: 'center',
+                flex: 1,
+                zIndex: 999,
+                height: '100%',
+                width: '100%',
+              }}
+            >
+              <LottieView
+                style={{ height: 200, textAlign: 'center', width: '100%' }}
+                source={require('../../assets/animations/scanner.json')}
+                autoPlay
+                speed={3}
+              ></LottieView>
+            </View>
+          ) : (
+            <></>
+          )}
+        </>
+      );
+    }
+    ```
+
+---
 
 # Errors
 
