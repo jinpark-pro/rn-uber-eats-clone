@@ -1716,7 +1716,7 @@
             }}
           >
             <LottieView
-              style={{ height: 100, alignSelf: 'center', marginBottom: 30 }}
+              style={{ height: 50, alignSelf: 'center', marginBottom: 16 }}
               source={require('../assets/animations/check-mark-done.json')}
               autoPlay
               speed={0.5}
@@ -1771,7 +1771,7 @@
         ...
     ```
 
----
+- ***
 
 # Errors
 
