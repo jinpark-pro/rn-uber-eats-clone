@@ -1,5 +1,7 @@
 # Uber Eats Clone
 
+- Using React Native, Yelp API (Get Restaurant Info), Google API (Place Autocomplete), Redux, Firebase
+
 - ```bash
   npx create-react-native-app rn-uber-eats-clone
   > How would you like to start: Template from expo/examples: https://github.com/expo/examples
